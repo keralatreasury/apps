@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala Treasury - Applications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            animation: fadeIn 1s ease;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .app-icon svg {
+            width: 30px;
+            height: 30px;
+            stroke: white;
+            stroke-width: 1.5;
+        }
+
+        .app-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .app-path {
+            color: #667eea;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+
+        .app-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .launch-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .launch-btn:hover {
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 50px;
+        }
+
+        .error {
+            text-align: center;
+            color: #ff6b6b;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Kerala Treasury Applications</h1>
+            <p>Explore our collection of applications and tools</p>
+        </div>
+        
+        <div id="apps-container">
+            <div class="loading">Loading applications...</div>
+        </div>
+    </div>
+
+    <script>
+        // Repository information
+        const REPO_OWNER = 'keralatreasury';
+        const REPO_NAME = 'keralatreasury.github.io';
+        const APPS_PATH = 'apps';
+        
+        async function fetchApps() {
+            const container = document.getElementById('apps-container');
+            
+            try {
+                // Fetch the list of folders from GitHub API
+                const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${APPS_PATH}`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch applications');
+                }
+                
+                const contents = await response.json();
+                
+                // Filter only directories (folders)
+                const folders = contents.filter(item => item.type === 'dir');
+                
+                if (folders.length === 0) {
+                    container.innerHTML = '<div class="error">No applications found in the repository.</div>';
+                    return;
+                }
+                
+                // Generate HTML for each app
+                const appsHtml = `
+                    <div class="apps-grid">
+                        ${folders.map(folder => `
+                            <div class="app-card" onclick="window.location.href='${folder.name}/'">
+                                <div class="app-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                        <path d="M8 7L10 9L14 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <div class="app-name">${formatAppName(folder.name)}</div>
+                                <div class="app-path">${folder.name}/</div>
+                                <div class="app-description">${getAppDescription(folder.name)}</div>
+                                <span class="launch-btn">Launch App →</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                container.innerHTML = appsHtml;
+                
+            } catch (error) {
+                console.error('Error fetching apps:', error);
+                container.innerHTML = `
+                    <div class="error">
+                        Unable to load applications. Please check your internet connection or try again later.
+                        <br><br>
+                        <small>Note: This page requires access to the GitHub API. If you're seeing this error, 
+                        the repository might be private or the API rate limit may be exceeded.</small>
+                    </div>
+                `;
+            }
+        }
+        
+        function formatAppName(folderName) {
+            // Convert folder name to readable title
+            return folderName
+                .split('-')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+        
+        function getAppDescription(folderName) {
+            // You can customize descriptions based on folder names
+            const descriptions = {
+                'app1': 'A powerful tool for managing treasury operations',
+                'app2': 'Real-time analytics dashboard',
+                'app3': 'Secure document management system'
+                // Add more descriptions as needed
+            };
+            
+            return descriptions[folderName] || 'Click to launch this application';
+        }
+        
+        // Fetch apps when page loads
+        fetchApps();
+    </script>
+</body>
+</html>
