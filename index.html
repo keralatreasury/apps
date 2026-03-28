@@ -54,16 +54,15 @@
         }
 
         /* App Card - Like Mobile App Icon */
-        .app-card {
-            background: transparent;
-            cursor: pointer;
-            text-align: center;
-            transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        .app-link {
             text-decoration: none;
             display: block;
+            text-align: center;
+            transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: pointer;
         }
 
-        .app-card:hover {
+        .app-link:hover {
             transform: translateY(-6px);
         }
 
@@ -84,7 +83,7 @@
             overflow: hidden;
         }
 
-        .app-card:hover .app-icon-wrapper {
+        .app-link:hover .app-icon-wrapper {
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
             transform: scale(1.02);
         }
@@ -97,7 +96,7 @@
             transition: transform 0.2s ease;
         }
 
-        .app-card:hover .app-icon {
+        .app-link:hover .app-icon {
             transform: scale(1.05);
         }
 
@@ -117,7 +116,7 @@
             transition: transform 0.2s ease;
         }
 
-        .app-card:hover .default-icon {
+        .app-link:hover .default-icon {
             transform: scale(1.05);
         }
 
@@ -135,21 +134,6 @@
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-        }
-
-        /* Hidden path - not shown in this design */
-        .app-path {
-            display: none;
-        }
-
-        /* No description visible - clean app icon style */
-        .app-description {
-            display: none;
-        }
-
-        /* Launch Button - Hidden, card itself is clickable */
-        .launch-btn {
-            display: none;
         }
 
         /* Loading & Error States */
@@ -232,7 +216,7 @@
         }
 
         /* Optional: subtle ripple effect on click */
-        .app-card:active .app-icon-wrapper {
+        .app-link:active .app-icon-wrapper {
             transform: scale(0.96);
             transition: transform 0.1s ease;
         }
@@ -242,7 +226,7 @@
     <div class="container">
         <div class="header">
             <h1>📱 App Portal</h1>
-           
+         
         </div>
         
         <div id="apps-container">
@@ -260,11 +244,6 @@
     <script>
         // Path to the apps configuration file
         const APPS_CONFIG_URL = './apps.txt';
-        
-        // Default descriptions - kept for internal use but not displayed
-        function getDefaultDescription(appName) {
-            return `${appName} application`;
-        }
         
         // Fetch and parse apps.txt
         async function loadApplications() {
@@ -284,16 +263,28 @@
                 
                 for (const line of lines) {
                     const parts = line.split(',').map(part => part.trim());
-                    if (parts.length >= 2) {
-                        const appName = parts[0];
-                        const appPath = parts[1];
+                    if (parts.length >= 1 && parts[0]) {
+                        // First part is the folder name
+                        const folderName = parts[0];
+                        // Second part is optional custom path, but we'll use folder structure
+                        const customPath = parts.length >= 2 && parts[1] ? parts[1] : null;
                         const logoUrl = parts.length >= 3 && parts[2] ? parts[2] : null;
                         
+                        // Use folder name to create the URL path
+                        // This will create URLs like: ./App01/ or ./FinancialDashboard/
+                        let appPath;
+                        if (customPath) {
+                            appPath = customPath;
+                        } else {
+                            // Ensure folder name ends with / for proper directory access
+                            appPath = `./${folderName}/`;
+                        }
+                        
                         apps.push({
-                            name: appName,
+                            name: formatAppName(folderName),
+                            folder: folderName,
                             path: appPath,
-                            logoUrl: logoUrl,
-                            description: getDefaultDescription(appName)
+                            logoUrl: logoUrl
                         });
                     }
                 }
@@ -303,31 +294,45 @@
                         <div class="empty-state">
                             <p style="margin-bottom: 12px;">📂 No applications configured</p>
                             <p style="font-size: 0.85rem; color: #64748b;">Add entries to apps.txt file</p>
+                            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 12px;">Format: FolderName,OptionalPath,LogoURL</p>
                         </div>
                     `;
                     return;
                 }
                 
-                // Render mobile-style app grid
+                // Render mobile-style app grid with anchor tags
                 renderAppsGrid(container, apps);
                 
             } catch (error) {
                 console.error('Error loading apps:', error);
                 container.innerHTML = `
                     <div class="error-state">
-                        <p style="margin-bottom: 12px;">⚠️ Could not load apps</p>
-                        <p style="font-size: 0.85rem; color: #64748b;">Make sure apps.txt exists in /apps/ folder</p>
-                        <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 12px;">${error.message}</p>
+                        <p style="margin-bottom: 12px;">⚠️ Could not load applications</p>
+                        <p style="font-size: 0.85rem; color: #64748b;">Make sure apps.txt exists in the /apps/ folder</p>
+                        <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 12px;">Error: ${error.message}</p>
                     </div>
                 `;
             }
+        }
+        
+        function formatAppName(folderName) {
+            // Convert folder name to readable title
+            // Examples: "App01" -> "App01", "financial-dashboard" -> "Financial Dashboard"
+            if (folderName.includes('-') || folderName.includes('_')) {
+                return folderName
+                    .split(/[-_]/)
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                    .join(' ');
+            }
+            // If it's like "App01", "Project2", etc., keep as is but with first letter capital if needed
+            return folderName;
         }
         
         function renderAppsGrid(container, apps) {
             const cardsHtml = `
                 <div class="apps-grid">
                     ${apps.map(app => `
-                        <div class="app-card" onclick="openApp('${escapeJsString(app.path)}')">
+                        <a href="${escapeHtml(app.path)}" target="_blank" class="app-link" rel="noopener noreferrer">
                             <div class="app-icon-wrapper">
                                 ${app.logoUrl ? 
                                     `<img src="${escapeHtml(app.logoUrl)}" alt="${escapeHtml(app.name)}" class="app-icon" 
@@ -339,9 +344,7 @@
                                 </div>
                             </div>
                             <div class="app-name">${escapeHtml(app.name)}</div>
-                            <div class="app-path">${escapeHtml(app.path)}</div>
-                            <div class="app-description">${escapeHtml(app.description)}</div>
-                        </div>
+                        </a>
                     `).join('')}
                 </div>
             `;
@@ -349,19 +352,10 @@
             container.innerHTML = cardsHtml;
         }
         
-        function openApp(path) {
-            // Open in new tab
-            window.open(path, '_blank', 'noopener,noreferrer');
-        }
-        
         function escapeHtml(str) {
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
-        }
-        
-        function escapeJsString(str) {
-            return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
         }
         
         // Load applications when page loads
