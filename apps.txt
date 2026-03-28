@@ -1,0 +1,1 @@
+Certificate Generator,./certificate-generator/,https://example.com/icons/app1.png
