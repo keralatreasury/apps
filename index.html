@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Applications Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Kerala Treasury - App Portal</title>
     <style>
         * {
             margin: 0;
@@ -13,204 +13,143 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            background: #f8f9fc;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 30px 20px 40px;
         }
 
         .container {
-            max-width: 1300px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Header Section */
+        /* Header Section - Minimal */
         .header {
             text-align: center;
-            margin-bottom: 50px;
-            animation: fadeInDown 0.6s ease;
+            margin-bottom: 48px;
+            animation: fadeInDown 0.5s ease;
         }
 
         .header h1 {
-            font-size: 2.8rem;
-            color: #1a3e6f;
-            margin-bottom: 12px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            font-size: 2rem;
+            color: #1e293b;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
         }
 
         .header p {
-            font-size: 1.2rem;
-            color: #5a6e8a;
+            font-size: 0.95rem;
+            color: #64748b;
             font-weight: 400;
         }
 
-        .header-divider {
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #1a3e6f, #4a90e2);
-            margin: 20px auto 0;
-            border-radius: 2px;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            background: white;
-            border-radius: 16px;
-            padding: 16px 24px;
-            margin-bottom: 40px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            display: inline-block;
-            width: auto;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        }
-
-        .stats-count {
-            font-size: 1rem;
-            color: #5a6e8a;
-        }
-
-        .stats-count strong {
-            color: #1a3e6f;
-            font-size: 1.3rem;
-            margin-right: 4px;
-        }
-
-        /* Apps Grid */
+        /* Apps Grid - Mobile App Style */
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 28px;
-            animation: fadeIn 0.8s ease;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 140px));
+            gap: 32px 24px;
+            justify-content: center;
+            animation: fadeIn 0.6s ease;
         }
 
-        /* App Card */
+        /* App Card - Like Mobile App Icon */
         .app-card {
-            background: white;
-            border-radius: 20px;
-            padding: 28px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
             cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #1a3e6f, #4a90e2);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            text-align: center;
+            transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            text-decoration: none;
+            display: block;
         }
 
         .app-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
-            border-color: transparent;
         }
 
-        .app-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        /* Icon Container */
+        /* Icon Container - Mobile App Style */
         .app-icon-wrapper {
-            width: 70px;
-            height: 70px;
-            margin-bottom: 20px;
-            background: #f8fafc;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-width: 120px;
+            margin: 0 auto 12px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card:hover .app-icon-wrapper {
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+            transform: scale(1.02);
+        }
+
+        /* Actual Icon Image */
+        .app-icon {
+            width: 55%;
+            height: 55%;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .app-card:hover .app-icon {
+            transform: scale(1.05);
+        }
+
+        /* Default Icon (when no logo URL) */
+        .default-icon {
+            width: 55%;
+            height: 55%;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
             border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .app-card:hover .app-icon-wrapper {
-            transform: scale(1.05);
-        }
-
-        .app-icon {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-        }
-
-        .default-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #1a3e6f, #4a90e2);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             color: white;
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 600;
-        }
-
-        /* App Info */
-        .app-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-
-        .app-path {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            font-family: 'Courier New', monospace;
-            margin-bottom: 16px;
-            word-break: break-all;
-        }
-
-        .app-description {
-            color: #5a6e8a;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        /* Launch Button */
-        .launch-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #f1f5f9;
-            color: #1a3e6f;
-            padding: 10px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .launch-btn:hover {
-            background: #1a3e6f;
-            color: white;
-            transform: translateX(4px);
-        }
-
-        .launch-btn svg {
-            width: 18px;
-            height: 18px;
+            box-shadow: 0 4px 8px rgba(59,130,246,0.2);
             transition: transform 0.2s ease;
         }
 
-        .launch-btn:hover svg {
-            transform: translateX(3px);
+        .app-card:hover .default-icon {
+            transform: scale(1.05);
+        }
+
+        /* App Name */
+        .app-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 4px;
+            line-height: 1.3;
+            word-break: break-word;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        /* Hidden path - not shown in this design */
+        .app-path {
+            display: none;
+        }
+
+        /* No description visible - clean app icon style */
+        .app-description {
+            display: none;
+        }
+
+        /* Launch Button - Hidden, card itself is clickable */
+        .launch-btn {
+            display: none;
         }
 
         /* Loading & Error States */
@@ -218,18 +157,20 @@
             text-align: center;
             padding: 60px 20px;
             background: white;
-            border-radius: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            max-width: 400px;
+            margin: 40px auto;
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             border: 3px solid #e2e8f0;
-            border-top-color: #1a3e6f;
+            border-top-color: #3b82f6;
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 20px;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 18px;
         }
 
         @keyframes spin {
@@ -237,51 +178,71 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
+            from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Footer */
+        /* Footer - Minimal */
         .footer {
             text-align: center;
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(0,0,0,0.08);
+            margin-top: 56px;
+            padding-top: 24px;
             color: #94a3b8;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
+            border-top: 1px solid rgba(0,0,0,0.06);
         }
 
-        @media (max-width: 768px) {
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
             body {
-                padding: 20px 16px;
+                padding: 20px 16px 32px;
             }
             
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.7rem;
             }
             
             .apps-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                grid-template-columns: repeat(auto-fill, minmax(90px, 100px));
+                gap: 24px 16px;
             }
             
-            .app-card {
-                padding: 20px;
+            .app-icon-wrapper {
+                border-radius: 20px;
             }
+            
+            .app-name {
+                font-size: 0.75rem;
+            }
+            
+            .default-icon {
+                font-size: 26px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .apps-grid {
+                gap: 40px 32px;
+            }
+        }
+
+        /* Optional: subtle ripple effect on click */
+        .app-card:active .app-icon-wrapper {
+            transform: scale(0.96);
+            transition: transform 0.1s ease;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📱Applications Portal </h1>
-            <p> </p>
-            <div class="header-divider"></div>
+            <h1>📱 App Portal</h1>
+           
         </div>
         
         <div id="apps-container">
@@ -292,7 +253,7 @@
         </div>
         
         <div class="footer">
-            <p>© 2026 Application Portal | NOC</p>
+            <p>© 2026 Kerala Treasury</p>
         </div>
     </div>
 
@@ -300,15 +261,9 @@
         // Path to the apps configuration file
         const APPS_CONFIG_URL = './apps.txt';
         
-        // Default app description based on app name
+        // Default descriptions - kept for internal use but not displayed
         function getDefaultDescription(appName) {
-            const descriptions = {
-                'Financial Dashboard': 'Real-time financial analytics and reporting',
-                'Employee Portal': 'Employee management and HR services',
-                'Document Manager': 'Secure document storage and retrieval',
-                'Treasury Reports': 'Comprehensive treasury reports and insights'
-            };
-            return descriptions[appName] || 'Click to launch this application';
+            return `${appName} application`;
         }
         
         // Fetch and parse apps.txt
@@ -319,7 +274,7 @@
                 const response = await fetch(APPS_CONFIG_URL);
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: Could not load apps configuration`);
+                    throw new Error(`HTTP ${response.status}`);
                 }
                 
                 const text = await response.text();
@@ -346,69 +301,52 @@
                 if (apps.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
-                            <p>📂 No applications configured yet.</p>
-                            <p style="margin-top: 10px; font-size: 0.9rem;">Please add entries to apps.txt file.</p>
+                            <p style="margin-bottom: 12px;">📂 No applications configured</p>
+                            <p style="font-size: 0.85rem; color: #64748b;">Add entries to apps.txt file</p>
                         </div>
                     `;
                     return;
                 }
                 
-                // Render the applications grid
+                // Render mobile-style app grid
                 renderAppsGrid(container, apps);
                 
             } catch (error) {
                 console.error('Error loading apps:', error);
                 container.innerHTML = `
                     <div class="error-state">
-                        <p>⚠️ Unable to load applications configuration.</p>
-                        <p style="margin-top: 10px; font-size: 0.9rem;">Make sure apps.txt exists in the /apps/ directory.</p>
-                        <p style="margin-top: 8px; font-size: 0.8rem; color: #94a3b8;">Error: ${error.message}</p>
+                        <p style="margin-bottom: 12px;">⚠️ Could not load apps</p>
+                        <p style="font-size: 0.85rem; color: #64748b;">Make sure apps.txt exists in /apps/ folder</p>
+                        <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 12px;">${error.message}</p>
                     </div>
                 `;
             }
         }
         
         function renderAppsGrid(container, apps) {
-            // Update stats in header
-            const statsHtml = `
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <div class="stats-bar">
-                        <span class="stats-count">
-                            <strong>${apps.length}</strong> applications available
-                        </span>
-                    </div>
-                </div>
-            `;
-            
-            // Generate cards
             const cardsHtml = `
                 <div class="apps-grid">
                     ${apps.map(app => `
-                        <div class="app-card" onclick="openApp('${app.path.replace(/'/g, "\\'")}')">
+                        <div class="app-card" onclick="openApp('${escapeJsString(app.path)}')">
                             <div class="app-icon-wrapper">
                                 ${app.logoUrl ? 
-                                    `<img src="${app.logoUrl}" alt="${app.name}" class="app-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : 
+                                    `<img src="${escapeHtml(app.logoUrl)}" alt="${escapeHtml(app.name)}" class="app-icon" 
+                                        onerror="this.style.display='none'; this.parentElement.querySelector('.default-icon').style.display='flex';">` : 
                                     ''
                                 }
                                 <div class="default-icon" ${app.logoUrl ? 'style="display: none;"' : ''}>
-                                    ${app.name.charAt(0).toUpperCase()}
+                                    ${escapeHtml(app.name.charAt(0).toUpperCase())}
                                 </div>
                             </div>
                             <div class="app-name">${escapeHtml(app.name)}</div>
                             <div class="app-path">${escapeHtml(app.path)}</div>
                             <div class="app-description">${escapeHtml(app.description)}</div>
-                            <button class="launch-btn" onclick="event.stopPropagation(); openApp('${app.path.replace(/'/g, "\\'")}')">
-                                Launch Application
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-linecap="round"/>
-                                </svg>
-                            </button>
                         </div>
                     `).join('')}
                 </div>
             `;
             
-            container.innerHTML = statsHtml + cardsHtml;
+            container.innerHTML = cardsHtml;
         }
         
         function openApp(path) {
@@ -420,6 +358,10 @@
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
+        }
+        
+        function escapeJsString(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
         }
         
         // Load applications when page loads
