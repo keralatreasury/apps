@@ -1,1 +1,1 @@
-Certificate Generator,./certificate-generator/,https://example.com/icons/app1.png
+Certificate Generator,./certificate-generator/index.html,https://example.com/icons/app1.png
