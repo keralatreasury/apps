@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>NOC Treasury - App Portal</title>
+    <title>App Portal - Digital Hub</title>
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         * {
             margin: 0;
@@ -17,14 +19,13 @@
             min-height: 100vh;
         }
 
-        /* Google Play Store inspired header */
-        .play-header {
+        /* Header */
+        .app-header {
             background: #ffffff;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(0px);
         }
 
         .header-content {
@@ -41,11 +42,12 @@
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .logo-icon {
             font-size: 28px;
+            color: #1a73e8;
         }
 
         .logo-text h1 {
@@ -62,7 +64,7 @@
             margin-top: 1px;
         }
 
-        /* Search Bar - Google Play Style */
+        /* Search Bar */
         .search-container {
             flex: 1;
             max-width: 500px;
@@ -127,6 +129,62 @@
             background: #e8eaed;
         }
 
+        /* Manual Refresh Button */
+        .refresh-btn {
+            background: #f1f3f7;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f1f1f;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .refresh-btn:hover {
+            background: #e8eaed;
+            transform: scale(0.98);
+        }
+
+        .refresh-btn i {
+            font-size: 16px;
+            color: #1a73e8;
+        }
+
+        /* Refresh indicator */
+        .refresh-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1f1f1f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 48px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .refresh-toast.show {
+            opacity: 1;
+        }
+        
+        .refresh-toast i {
+            font-size: 18px;
+        }
+
         /* Main container */
         .main-container {
             max-width: 1280px;
@@ -134,7 +192,7 @@
             padding: 28px 24px 48px;
         }
 
-        /* Category / Stats row */
+        /* Info bar */
         .info-bar {
             display: flex;
             justify-content: space-between;
@@ -148,6 +206,13 @@
             font-size: 0.85rem;
             color: #5f6368;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .results-count i {
+            font-size: 14px;
         }
 
         .badge {
@@ -157,9 +222,12 @@
             font-size: 0.75rem;
             font-weight: 500;
             color: #1f1f1f;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Apps Grid - Google Play Store Card Style */
+        /* Apps Grid */
         .apps-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(170px, 200px));
@@ -167,7 +235,7 @@
             justify-content: start;
         }
 
-        /* App Card - Premium Google Play Style */
+        /* App Card */
         .app-card {
             text-decoration: none;
             display: block;
@@ -184,7 +252,7 @@
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
-        /* Icon Section - Play Store Style */
+        /* Icon Section */
         .card-icon-wrapper {
             padding: 28px 24px 16px 24px;
             background: linear-gradient(145deg, #fafbfd, #ffffff);
@@ -219,8 +287,8 @@
             color: white;
             font-size: 42px;
             font-weight: 500;
-            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.25);
             font-family: 'Google Sans', system-ui;
+            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.25);
         }
 
         /* Card Info */
@@ -248,9 +316,12 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        /* Empty & Loading States */
+        /* State Containers */
         .state-container {
             display: flex;
             flex-direction: column;
@@ -281,7 +352,7 @@
         .empty-icon {
             font-size: 64px;
             margin-bottom: 20px;
-            opacity: 0.7;
+            color: #9aa0a6;
         }
 
         .state-title {
@@ -297,8 +368,28 @@
             max-width: 280px;
         }
 
+        .reset-search-btn {
+            margin-top: 20px;
+            background: #e8eaed;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .reset-search-btn:hover {
+            background: #dadce0;
+        }
+
         /* Footer */
-        .play-footer {
+        .app-footer {
             max-width: 1280px;
             margin: 48px auto 0;
             padding: 24px 24px 32px;
@@ -306,6 +397,10 @@
             text-align: center;
             color: #5f6368;
             font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         /* Animation */
@@ -363,6 +458,11 @@
             .app-title {
                 font-size: 0.9rem;
             }
+            
+            .refresh-btn {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+            }
         }
 
         @media (min-width: 1200px) {
@@ -371,7 +471,6 @@
             }
         }
 
-        /* subtle click effect */
         .app-card:active {
             transform: scale(0.97);
             transition: transform 0.08s;
@@ -379,99 +478,165 @@
     </style>
 </head>
 <body>
-    <div class="play-header">
+    <div class="app-header">
         <div class="header-content">
             <div class="logo-area">
-                <div class="logo-icon">📱</div>
+                <i class="bi bi-grid-3x3-gap-fill logo-icon"></i>
                 <div class="logo-text">
-                    <h1>NOC </h1>
-                    <p>App Portal</p>
+                    <h1>App Portal</h1>
+                    <p>Digital Hub</p>
                 </div>
             </div>
             <div class="search-container">
                 <div class="search-wrapper">
-                    <span class="search-icon">🔍</span>
+                    <i class="bi bi-search search-icon"></i>
                     <input type="text" class="search-input" id="searchInput" placeholder="Search for apps..." autocomplete="off">
-                    <button class="clear-search" id="clearSearchBtn" aria-label="Clear search">✕</button>
+                    <button class="clear-search" id="clearSearchBtn" aria-label="Clear search">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
                 </div>
             </div>
+            <button class="refresh-btn" id="manualRefreshBtn">
+                <i class="bi bi-arrow-repeat"></i>
+                <span>Refresh</span>
+            </button>
         </div>
     </div>
 
     <div class="main-container">
         <div class="info-bar" id="infoBar" style="display: none;">
-            <div class="results-count" id="resultsCount"></div>
-            <div class="badge" id="appCountBadge"></div>
+            <div class="results-count" id="resultsCount">
+                <i class="bi bi-app-indicator"></i>
+                <span></span>
+            </div>
+            <div class="badge" id="appCountBadge">
+                <i class="bi bi-collection"></i>
+                <span></span>
+            </div>
         </div>
         <div id="apps-container">
             <div class="state-container">
                 <div class="spinner-circle"></div>
                 <div class="state-title">Loading applications...</div>
-                <div class="state-sub">Please wait while we fetch the latest apps</div>
+                <div class="state-sub">Fetching the latest app list</div>
             </div>
         </div>
     </div>
 
-    <div class="play-footer">
-        <p>© 2026 NOC Team • </p>
+    <div class="app-footer">
+        <i class="bi bi-database"></i>
+        <span>© 2026 Digital App Portal</span>
+    </div>
+
+    <div class="refresh-toast" id="refreshToast">
+        <i class="bi bi-check-circle-fill"></i>
+        <span id="toastMessage">Apps updated!</span>
     </div>
 
     <script>
-        // Configuration
+        // Configuration with cache-busting - NO CACHING
         const APPS_CONFIG_URL = './apps.txt';
         
-        let allApps = [];       // store original apps array
+        let allApps = [];
         let currentFilter = '';
         
         // DOM Elements
         const container = document.getElementById('apps-container');
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearchBtn');
+        const refreshBtn = document.getElementById('manualRefreshBtn');
         const infoBar = document.getElementById('infoBar');
-        const resultsCountSpan = document.getElementById('resultsCount');
-        const appCountBadge = document.getElementById('appCountBadge');
+        const resultsCountSpan = document.getElementById('resultsCount').querySelector('span');
+        const appCountBadgeSpan = document.getElementById('appCountBadge').querySelector('span');
+        const refreshToast = document.getElementById('refreshToast');
+        const toastMessageSpan = document.getElementById('toastMessage');
         
-        // Helper: Format app name beautifully (Google Play style title)
+        // Show toast notification
+        function showToast(message, isError = false) {
+            toastMessageSpan.textContent = message;
+            refreshToast.classList.add('show');
+            if (isError) {
+                refreshToast.style.background = '#d32f2f';
+                refreshToast.querySelector('i').className = 'bi bi-exclamation-triangle-fill';
+            } else {
+                refreshToast.style.background = '#1f1f1f';
+                refreshToast.querySelector('i').className = 'bi bi-check-circle-fill';
+            }
+            setTimeout(() => {
+                refreshToast.classList.remove('show');
+                setTimeout(() => {
+                    refreshToast.style.background = '#1f1f1f';
+                    refreshToast.querySelector('i').className = 'bi bi-check-circle-fill';
+                }, 300);
+            }, 2500);
+        }
+        
+        // Fetch with cache-busting - ALWAYS get fresh data
+        async function fetchAppsNoCache() {
+            // Add timestamp to prevent any browser caching
+            const cacheBuster = `?t=${Date.now()}`;
+            const url = APPS_CONFIG_URL + cacheBuster;
+            
+            try {
+                const response = await fetch(url, {
+                    cache: 'no-store',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const text = await response.text();
+                return text;
+            } catch (error) {
+                throw error;
+            }
+        }
+        
         function formatAppName(folderName) {
             if (!folderName) return 'App';
-            // Remove common suffixes or clean
             let cleaned = folderName.trim();
-            // Handle dash/underscore cases: financial-dashboard -> Financial Dashboard
             if (cleaned.includes('-') || cleaned.includes('_')) {
                 return cleaned
                     .split(/[-_]/)
                     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                     .join(' ');
             }
-            // CamelCase to readable (simple)
             if (/^[A-Z]/.test(cleaned) && /[a-z]/.test(cleaned.slice(1))) {
-                // If it's like "App01", "MyApp" keep mostly but add space if needed
                 let spaced = cleaned.replace(/([a-z])([A-Z])/g, '$1 $2');
                 return spaced.charAt(0).toUpperCase() + spaced.slice(1);
             }
-            // fallback: just capitalize first letter
             return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
         }
         
-        // Extract a category from folder name for the play store style badge
         function getCategoryFromName(folderName) {
             const name = folderName.toLowerCase();
-            if (name.includes('finance') || name.includes('treasury') || name.includes('budget')) return 'Finance';
-            if (name.includes('gov') || name.includes('admin') || name.includes('service')) return 'Government';
-            if (name.includes('dashboard') || name.includes('analytics')) return 'Analytics';
-            if (name.includes('mobile') || name.includes('app')) return 'Utility';
-            if (name.includes('report')) return 'Reports';
+            if (name.includes('finance') || name.includes('budget') || name.includes('pay')) return 'Finance';
+            if (name.includes('admin') || name.includes('service') || name.includes('portal')) return 'Service';
+            if (name.includes('dashboard') || name.includes('analytics') || name.includes('data')) return 'Analytics';
+            if (name.includes('mobile') || name.includes('app') || name.includes('tool')) return 'Utility';
+            if (name.includes('report') || name.includes('summary')) return 'Reports';
             return 'App';
         }
         
-        // Fetch and parse apps.txt (same format: folderName, customPath, logoUrl)
-        async function loadApplications() {
+        // Load applications with NO CACHE
+        async function loadApplications(showToastMsg = false) {
+            // Show loading state
+            container.innerHTML = `
+                <div class="state-container">
+                    <div class="spinner-circle"></div>
+                    <div class="state-title">Loading applications...</div>
+                    <div class="state-sub">Fetching the latest app list</div>
+                </div>
+            `;
+            
             try {
-                const response = await fetch(APPS_CONFIG_URL);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status} - File not found`);
-                }
-                const text = await response.text();
+                const text = await fetchAppsNoCache();
                 const lines = text.split('\n').filter(line => line.trim() && !line.startsWith('#'));
                 
                 const apps = [];
@@ -503,30 +668,41 @@
                 }
                 
                 if (apps.length === 0) {
-                    renderEmptyState('📂 No applications configured', 'Add entries to apps.txt file with format: FolderName,OptionalPath,LogoURL');
+                    renderEmptyState('No applications found', 'Add entries to apps.txt file with format: FolderName,OptionalPath,LogoURL', null, false);
+                    if (showToastMsg) showToast('No apps found in config', true);
                     return;
                 }
                 
                 allApps = apps;
                 updateTotalBadge();
-                renderAppsGrid(allApps);
-                attachSearchEvents();
+                
+                // Preserve search if any
+                if (currentFilter) {
+                    const filtered = filterApps(currentFilter);
+                    renderAppsGrid(filtered);
+                } else {
+                    renderAppsGrid(allApps);
+                }
+                
+                if (showToastMsg) {
+                    showToast(`Loaded ${apps.length} app${apps.length !== 1 ? 's' : ''}`);
+                }
                 
             } catch (error) {
                 console.error('Error loading apps:', error);
-                renderEmptyState('⚠️ Could not load applications', 'Make sure apps.txt exists in the same directory as index.html', error.message);
+                renderEmptyState('Unable to load applications', 'Make sure apps.txt exists in the same directory', error.message, false);
+                if (showToastMsg) showToast('Failed to load apps. Check console.', true);
             }
         }
         
         function updateTotalBadge() {
             if (allApps.length) {
-                appCountBadge.textContent = `${allApps.length} app${allApps.length !== 1 ? 's' : ''} available`;
+                appCountBadgeSpan.textContent = `${allApps.length} app${allApps.length !== 1 ? 's' : ''} available`;
             } else {
-                appCountBadge.textContent = '0 apps';
+                appCountBadgeSpan.textContent = '0 apps';
             }
         }
         
-        // Filter apps based on search input
         function filterApps(searchTerm) {
             if (!searchTerm.trim()) {
                 return allApps;
@@ -535,21 +711,19 @@
             return allApps.filter(app => app.searchTokens.includes(term));
         }
         
-        // Render apps with Google Play card style
         function renderAppsGrid(appsToRender) {
             if (!appsToRender.length) {
                 const searchTerm = currentFilter;
                 if (searchTerm && allApps.length > 0) {
-                    renderEmptyState('🔍 No matching apps', `We couldn't find any apps matching "${searchTerm}"`, null, true);
+                    renderEmptyState('No matching apps', `No apps found for "${searchTerm}"`, null, true);
                 } else if (allApps.length === 0) {
-                    renderEmptyState('📭 App list is empty', 'Please check apps.txt configuration', null, false);
+                    renderEmptyState('App list is empty', 'Please check apps.txt configuration', null, false);
                 } else {
-                    renderEmptyState('✨ No apps found', 'Try adjusting your search', null, true);
+                    renderEmptyState('No apps found', 'Try adjusting your search', null, true);
                 }
                 return;
             }
             
-            // Build grid with modern card design
             const gridHtml = `
                 <div class="apps-grid">
                     ${appsToRender.map(app => `
@@ -566,7 +740,10 @@
                             </div>
                             <div class="card-info">
                                 <div class="app-title">${escapeHtml(app.name)}</div>
-                                <div class="app-category">${escapeHtml(app.category)}</div>
+                                <div class="app-category">
+                                    <i class="bi bi-tag"></i>
+                                    ${escapeHtml(app.category)}
+                                </div>
                             </div>
                         </a>
                     `).join('')}
@@ -575,29 +752,30 @@
             
             container.innerHTML = gridHtml;
             
-            // Update info bar with results count
             const showingCount = appsToRender.length;
             const totalCount = allApps.length;
             if (currentFilter) {
-                resultsCountSpan.innerHTML = `📱 ${showingCount} result${showingCount !== 1 ? 's' : ''} for “${escapeHtml(currentFilter)}”`;
+                resultsCountSpan.innerHTML = `${showingCount} result${showingCount !== 1 ? 's' : ''} for "${escapeHtml(currentFilter)}"`;
                 infoBar.style.display = 'flex';
             } else {
-                resultsCountSpan.innerHTML = `✨ All apps · ${totalCount} available`;
+                resultsCountSpan.innerHTML = `All apps · ${totalCount} available`;
                 infoBar.style.display = 'flex';
             }
         }
         
         function renderEmptyState(title, message, errorDetail = null, isSearchEmpty = false) {
             let additionalHtml = '';
-            if (errorDetail) {
-                additionalHtml = `<div style="font-size:0.7rem; margin-top:12px; color:#ea4335;">${escapeHtml(errorDetail)}</div>`;
+            if (errorDetail && !isSearchEmpty) {
+                additionalHtml = `<div style="font-size:0.7rem; margin-top:12px; color:#ea4335; display:flex; align-items:center; gap:4px;"><i class="bi bi-exclamation-triangle"></i>${escapeHtml(errorDetail)}</div>`;
             }
             if (isSearchEmpty && allApps.length > 0) {
-                additionalHtml += `<button id="resetSearchBtn" style="margin-top:20px; background:#e8eaed; border:none; padding:8px 20px; border-radius:40px; font-weight:500; cursor:pointer; font-family:inherit;">Clear Search</button>`;
+                additionalHtml += `<button id="resetSearchBtn" class="reset-search-btn"><i class="bi bi-arrow-counterclockwise"></i> Clear Search</button>`;
             }
             container.innerHTML = `
                 <div class="state-container">
-                    <div class="empty-icon">${isSearchEmpty ? '🔎' : '📦'}</div>
+                    <div class="empty-icon">
+                        <i class="bi ${isSearchEmpty ? 'bi-search' : 'bi-folder2-open'}"></i>
+                    </div>
                     <div class="state-title">${escapeHtml(title)}</div>
                     <div class="state-sub">${escapeHtml(message)}</div>
                     ${additionalHtml}
@@ -624,7 +802,7 @@
         }
         
         function attachSearchEvents() {
-            searchInput.addEventListener('input', (e) => {
+            searchInput.addEventListener('input', () => {
                 performSearch();
             });
             
@@ -635,7 +813,6 @@
                 searchInput.focus();
             });
             
-            // Optional: escape key clears
             searchInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     searchInput.value = '';
@@ -646,6 +823,17 @@
             });
         }
         
+        // Manual refresh - forces fresh load with cache busting
+        async function manualRefresh() {
+            await loadApplications(true);
+            // Clear search after refresh to show all fresh apps
+            if (searchInput.value !== '') {
+                searchInput.value = '';
+                currentFilter = '';
+                performSearch();
+            }
+        }
+        
         function escapeHtml(str) {
             if (!str) return '';
             const div = document.createElement('div');
@@ -653,8 +841,14 @@
             return div.innerHTML;
         }
         
-        // initialize
-        loadApplications();
+        // Initialize - load fresh with no cache
+        async function init() {
+            await loadApplications(false);
+            attachSearchEvents();
+            refreshBtn.addEventListener('click', manualRefresh);
+        }
+        
+        init();
     </script>
 </body>
 </html>
