@@ -68,7 +68,7 @@
             margin-top: 1px;
         }
 
-        /* Search Bar - Stretches to fill remaining space */
+        /* Search Bar - Desktop */
         .search-container {
             flex: 1;
             min-width: 200px;
@@ -96,6 +96,7 @@
             margin-right: 12px;
             display: flex;
             align-items: center;
+            cursor: pointer;
         }
 
         .search-input {
@@ -130,6 +131,122 @@
 
         .clear-search:hover {
             background: #e8eaed;
+        }
+
+        /* Mobile Search Overlay */
+        .mobile-search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .mobile-search-overlay.active {
+            display: flex;
+        }
+
+        .mobile-search-card {
+            background: #ffffff;
+            margin: 16px;
+            border-radius: 32px;
+            width: calc(100% - 32px);
+            max-width: 500px;
+            animation: slideDown 0.25s ease;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-search-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            gap: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .mobile-search-input {
+            flex: 1;
+            border: none;
+            font-size: 1rem;
+            padding: 12px 0;
+            outline: none;
+            font-family: inherit;
+            background: transparent;
+        }
+
+        .close-search {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #5f6368;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .close-search:hover {
+            background: #f1f3f7;
+        }
+
+        .mobile-search-icon {
+            font-size: 20px;
+            color: #5f6368;
+        }
+
+        /* Mobile search button (visible only on mobile) */
+        .mobile-search-btn {
+            display: none;
+            background: #f1f3f7;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .mobile-search-btn:hover {
+            background: #e8eaed;
+        }
+
+        .mobile-search-btn i {
+            font-size: 20px;
+            color: #5f6368;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         /* Refresh indicator */
@@ -488,19 +605,18 @@
         /* Responsive - Mobile devices */
         @media (max-width: 768px) {
             .header-content {
-                flex-direction: column;
-                align-items: stretch;
                 padding: 12px 16px;
                 gap: 12px;
             }
             
-            .logo-area {
-                justify-content: center;
+            /* Hide desktop search container on mobile */
+            .search-container {
+                display: none;
             }
             
-            .search-container {
-                width: 100%;
-                max-width: 100%;
+            /* Show mobile search button */
+            .mobile-search-btn {
+                display: flex;
             }
             
             .main-container {
@@ -536,7 +652,7 @@
             }
         }
 
-        /* Tablet devices - maintain horizontal layout */
+        /* Tablet devices - maintain desktop layout */
         @media (min-width: 769px) and (max-width: 1024px) {
             .header-content {
                 gap: 16px;
@@ -548,6 +664,10 @@
             
             .search-container {
                 flex: 1;
+            }
+            
+            .mobile-search-btn {
+                display: none;
             }
         }
 
@@ -567,14 +687,32 @@
                     <p>Digital Hub</p>
                 </div>
             </div>
+            <!-- Desktop Search -->
             <div class="search-container">
                 <div class="search-wrapper">
                     <i class="bi bi-search search-icon"></i>
-                    <input type="text" class="search-input" id="searchInput" placeholder="Search by name, tag, or description..." autocomplete="off">
-                    <button class="clear-search" id="clearSearchBtn" aria-label="Clear search">
+                    <input type="text" class="search-input" id="desktopSearchInput" placeholder="Search by name, tag, or description..." autocomplete="off">
+                    <button class="clear-search" id="desktopClearBtn" aria-label="Clear search">
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </div>
+            </div>
+            <!-- Mobile Search Button -->
+            <button class="mobile-search-btn" id="mobileSearchBtn">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Search Overlay -->
+    <div class="mobile-search-overlay" id="mobileSearchOverlay">
+        <div class="mobile-search-card">
+            <div class="mobile-search-header">
+                <i class="bi bi-search mobile-search-icon"></i>
+                <input type="text" class="mobile-search-input" id="mobileSearchInput" placeholder="Search by name, tag, or description..." autocomplete="off">
+                <button class="close-search" id="closeMobileSearch">
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -618,8 +756,12 @@
         
         // DOM Elements
         const container = document.getElementById('apps-container');
-        const searchInput = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearSearchBtn');
+        const desktopSearchInput = document.getElementById('desktopSearchInput');
+        const desktopClearBtn = document.getElementById('desktopClearBtn');
+        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+        const mobileSearchOverlay = document.getElementById('mobileSearchOverlay');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const closeMobileSearch = document.getElementById('closeMobileSearch');
         const infoBar = document.getElementById('infoBar');
         const resultsCountSpan = document.getElementById('resultsCount').querySelector('span');
         const appCountBadgeSpan = document.getElementById('appCountBadge').querySelector('span');
@@ -883,8 +1025,7 @@
                 const resetBtn = document.getElementById('resetSearchBtn');
                 if (resetBtn) {
                     resetBtn.addEventListener('click', () => {
-                        searchInput.value = '';
-                        currentFilter = '';
+                        updateSearchValue('');
                         performSearch();
                     });
                 }
@@ -892,43 +1033,83 @@
             infoBar.style.display = 'none';
         }
         
+        function updateSearchValue(value) {
+            currentFilter = value;
+            if (desktopSearchInput) desktopSearchInput.value = value;
+            if (mobileSearchInput) mobileSearchInput.value = value;
+        }
+        
         function performSearch() {
-            const searchTerm = searchInput.value;
-            currentFilter = searchTerm;
-            const filtered = filterApps(searchTerm);
+            const filtered = filterApps(currentFilter);
             renderAppsGrid(filtered);
         }
         
+        function handleSearchInput(value) {
+            currentFilter = value;
+            performSearch();
+            // Sync both search inputs
+            if (desktopSearchInput && desktopSearchInput.value !== value) {
+                desktopSearchInput.value = value;
+            }
+            if (mobileSearchInput && mobileSearchInput.value !== value) {
+                mobileSearchInput.value = value;
+            }
+        }
+        
         function attachSearchEvents() {
-            searchInput.addEventListener('input', () => {
-                performSearch();
+            // Desktop search events
+            if (desktopSearchInput) {
+                desktopSearchInput.addEventListener('input', (e) => {
+                    handleSearchInput(e.target.value);
+                });
+            }
+            
+            if (desktopClearBtn) {
+                desktopClearBtn.addEventListener('click', () => {
+                    handleSearchInput('');
+                    if (desktopSearchInput) desktopSearchInput.focus();
+                });
+            }
+            
+            // Mobile search events
+            if (mobileSearchInput) {
+                mobileSearchInput.addEventListener('input', (e) => {
+                    handleSearchInput(e.target.value);
+                });
+            }
+            
+            // Mobile overlay controls
+            if (mobileSearchBtn) {
+                mobileSearchBtn.addEventListener('click', () => {
+                    mobileSearchOverlay.classList.add('active');
+                    mobileSearchInput.focus();
+                });
+            }
+            
+            if (closeMobileSearch) {
+                closeMobileSearch.addEventListener('click', () => {
+                    mobileSearchOverlay.classList.remove('active');
+                });
+            }
+            
+            mobileSearchOverlay.addEventListener('click', (e) => {
+                if (e.target === mobileSearchOverlay) {
+                    mobileSearchOverlay.classList.remove('active');
+                }
             });
             
-            clearBtn.addEventListener('click', () => {
-                searchInput.value = '';
-                currentFilter = '';
-                performSearch();
-                searchInput.focus();
-            });
-            
-            searchInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    searchInput.value = '';
-                    currentFilter = '';
-                    performSearch();
-                    searchInput.blur();
+            // Escape key to close mobile search
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileSearchOverlay.classList.contains('active')) {
+                    mobileSearchOverlay.classList.remove('active');
                 }
             });
         }
         
-        // Auto-refresh on page load (no manual button)
+        // Auto-refresh every 30 seconds
         async function autoRefresh() {
             await loadApplications(true);
-            if (searchInput.value !== '') {
-                searchInput.value = '';
-                currentFilter = '';
-                performSearch();
-            }
+            performSearch();
         }
         
         function escapeHtml(str) {
@@ -941,7 +1122,6 @@
         async function init() {
             await loadApplications(false);
             attachSearchEvents();
-            // Auto-refresh every 30 seconds to keep data fresh
             setInterval(autoRefresh, 30000);
         }
         
