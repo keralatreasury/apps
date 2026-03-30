@@ -1,1 +1,1 @@
-Certificate Generator,./certificate-generator/index.html
+Certificate Generator,./certificate-generator/index.html,./certificate-generator/CERTIFY.png
