@@ -1,1 +1,2 @@
 Certificate Generator,./certificate-generator/index.html,./certificate-generator/CERTIFY.png
+NOC ADMIN,https://keralatreasury.github.io/network/,./images/app-icons/noc%20admin.png
