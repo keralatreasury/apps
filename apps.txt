@@ -3,4 +3,4 @@ NOC ADMIN,https://keralatreasury.github.io/network/,./images/app-icons/noc%20adm
 Income TaxCalc,https://itcelldto.github.io/try/apps/income-tax-calculator/index.html,Utility,,Income Tax Calculation (New Regieme),3.7
 UTR Details,https://itcelltreasury.github.io/try/utr,,Utility,Details of UTR that changed in the period of Aug2025,4.4
 HelpDesk ITCell,https://itcellhelpdesk.github.io/home/app/index.html,https://itcellhelpdesk.github.io/home/app/icons/icon-192x192.png,Public Utility,IT Cell Assistance for public,4.5
-Files Repository,https://itcelldto.github.io/try/apps/doc-repository.html,,Utility,Search Circulars, User Manuals and Forms,4.3
+Files Repository,https://itcelldto.github.io/try/apps/doc-repository.html,,Utility,Search Circulars User Manuals and Forms,4.3
