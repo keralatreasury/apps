@@ -1,2 +1,3 @@
-Certificate Generator,./certificate-generator/index.html,./certificate-generator/CERTIFY.png
-NOC ADMIN,https://keralatreasury.github.io/network/,./images/app-icons/noc%20admin.png
+Certificate Generator,./certificate-generator/index.html,./certificate-generator/CERTIFY.png,Utility,Text editing utility for all,4.5  
+NOC ADMIN,https://keralatreasury.github.io/network/,./images/app-icons/noc%20admin.png,SDWAN, Application for network team,4.7
+IncomeTaxCalc,https://itcelldto.github.io/try/apps/income-tax-calculator/index.html,Utility,Income Tax Calculation (New Regieme),3.7 
