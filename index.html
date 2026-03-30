@@ -227,48 +227,50 @@
             gap: 6px;
         }
 
-        /* Apps Grid */
+        /* Apps Grid - Enhanced Cards */
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(170px, 200px));
-            gap: 28px 24px;
-            justify-content: start;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 380px));
+            gap: 24px;
+            justify-content: center;
         }
 
-        /* App Card */
+        /* App Card - Rich Card Design */
         .app-card {
             text-decoration: none;
             display: block;
             background: #ffffff;
-            border-radius: 24px;
+            border-radius: 28px;
             overflow: hidden;
-            transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
             cursor: pointer;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px rgba(0, 0, 0, 0.05);
         }
 
         .app-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.02);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.05);
         }
 
-        /* Icon Section */
-        .card-icon-wrapper {
-            padding: 28px 24px 16px 24px;
-            background: linear-gradient(145deg, #fafbfd, #ffffff);
+        /* Card Header with Icon and Tag */
+        .card-header {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px 20px 12px 20px;
+        }
+
+        .icon-wrapper {
+            flex-shrink: 0;
         }
 
         .app-icon-large {
-            width: 88px;
-            height: 88px;
-            border-radius: 22px;
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
             object-fit: cover;
-            background: #fff;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.04);
+            background: #f8f9fa;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: transform 0.2s ease;
         }
 
@@ -277,48 +279,136 @@
         }
 
         .default-icon-large {
-            width: 88px;
-            height: 88px;
-            border-radius: 22px;
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
             background: linear-gradient(135deg, #4285f4, #1a73e8);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 42px;
-            font-weight: 500;
+            font-size: 32px;
+            font-weight: 600;
             font-family: 'Google Sans', system-ui;
-            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.25);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+            text-transform: uppercase;
         }
 
-        /* Card Info */
-        .card-info {
-            padding: 8px 16px 20px 16px;
-            text-align: left;
+        .app-info-header {
+            flex: 1;
+            min-width: 0;
         }
 
         .app-title {
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 1.1rem;
+            font-weight: 600;
             color: #202124;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             line-height: 1.3;
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            letter-spacing: -0.2px;
         }
 
-        .app-category {
-            font-size: 0.7rem;
-            color: #5f6368;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            display: flex;
+        /* Tag Badge */
+        .app-tag {
+            display: inline-flex;
             align-items: center;
             gap: 4px;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .app-tag i {
+            font-size: 12px;
+        }
+
+        /* Star Rating */
+        .star-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+            color: #f9ab00;
+        }
+
+        .stars i {
+            font-size: 14px;
+        }
+
+        .stars i.bi-star-fill {
+            color: #f9ab00;
+        }
+
+        .stars i.bi-star-half {
+            color: #f9ab00;
+        }
+
+        .stars i.bi-star {
+            color: #dadce0;
+        }
+
+        .rating-value {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #5f6368;
+        }
+
+        /* Description */
+        .app-description {
+            padding: 0 20px 16px 20px;
+        }
+
+        .description-text {
+            font-size: 0.85rem;
+            color: #5f6368;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        /* Card Footer with Launch Button */
+        .card-footer {
+            padding: 12px 20px 20px 20px;
+            border-top: 1px solid #f1f3f7;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .launch-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f1f3f7;
+            color: #1a73e8;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .app-card:hover .launch-btn {
+            background: #e8eaed;
+            transform: translateX(4px);
+        }
+
+        .launch-btn i {
+            font-size: 14px;
         }
 
         /* State Containers */
@@ -420,7 +510,7 @@
         }
 
         /* Responsive */
-        @media (max-width: 680px) {
+        @media (max-width: 780px) {
             .header-content {
                 flex-direction: column;
                 align-items: stretch;
@@ -436,27 +526,31 @@
             }
             
             .apps-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-template-columns: 1fr;
                 gap: 20px;
             }
             
-            .card-icon-wrapper {
-                padding: 20px 16px 12px 16px;
+            .card-header {
+                padding: 16px 16px 8px 16px;
             }
             
             .app-icon-large, .default-icon-large {
-                width: 72px;
-                height: 72px;
-                font-size: 34px;
-                border-radius: 18px;
-            }
-            
-            .card-info {
-                padding: 6px 12px 16px 12px;
+                width: 56px;
+                height: 56px;
+                font-size: 26px;
+                border-radius: 14px;
             }
             
             .app-title {
-                font-size: 0.9rem;
+                font-size: 1rem;
+            }
+            
+            .app-description {
+                padding: 0 16px 12px 16px;
+            }
+            
+            .card-footer {
+                padding: 12px 16px 16px 16px;
             }
             
             .refresh-btn {
@@ -465,14 +559,8 @@
             }
         }
 
-        @media (min-width: 1200px) {
-            .apps-grid {
-                gap: 32px;
-            }
-        }
-
         .app-card:active {
-            transform: scale(0.97);
+            transform: scale(0.98);
             transition: transform 0.08s;
         }
     </style>
@@ -490,7 +578,7 @@
             <div class="search-container">
                 <div class="search-wrapper">
                     <i class="bi bi-search search-icon"></i>
-                    <input type="text" class="search-input" id="searchInput" placeholder="Search for apps..." autocomplete="off">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by name, tag, or description..." autocomplete="off">
                     <button class="clear-search" id="clearSearchBtn" aria-label="Clear search">
                         <i class="bi bi-x-lg"></i>
                     </button>
@@ -573,7 +661,6 @@
         
         // Fetch with cache-busting - ALWAYS get fresh data
         async function fetchAppsNoCache() {
-            // Add timestamp to prevent any browser caching
             const cacheBuster = `?t=${Date.now()}`;
             const url = APPS_CONFIG_URL + cacheBuster;
             
@@ -598,35 +685,36 @@
             }
         }
         
-        function formatAppName(folderName) {
-            if (!folderName) return 'App';
-            let cleaned = folderName.trim();
-            if (cleaned.includes('-') || cleaned.includes('_')) {
-                return cleaned
-                    .split(/[-_]/)
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                    .join(' ');
+        // Get initials from app name (for default icon)
+        function getInitials(appName) {
+            if (!appName) return 'A';
+            // Split by spaces and get first letters of up to 2 words
+            const words = appName.trim().split(/\s+/);
+            if (words.length === 1) {
+                return words[0].charAt(0).toUpperCase();
             }
-            if (/^[A-Z]/.test(cleaned) && /[a-z]/.test(cleaned.slice(1))) {
-                let spaced = cleaned.replace(/([a-z])([A-Z])/g, '$1 $2');
-                return spaced.charAt(0).toUpperCase() + spaced.slice(1);
-            }
-            return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+            return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
         }
         
-        function getCategoryFromName(folderName) {
-            const name = folderName.toLowerCase();
-            if (name.includes('finance') || name.includes('budget') || name.includes('pay')) return 'Finance';
-            if (name.includes('admin') || name.includes('service') || name.includes('portal')) return 'Service';
-            if (name.includes('dashboard') || name.includes('analytics') || name.includes('data')) return 'Analytics';
-            if (name.includes('mobile') || name.includes('app') || name.includes('tool')) return 'Utility';
-            if (name.includes('report') || name.includes('summary')) return 'Reports';
-            return 'App';
+        // Format star rating to display stars
+        function renderStars(rating) {
+            const numRating = parseFloat(rating);
+            if (isNaN(numRating) || numRating < 0) return '<i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>';
+            
+            const fullStars = Math.floor(numRating);
+            const hasHalf = numRating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalf ? 1 : 0);
+            
+            let starsHtml = '';
+            for (let i = 0; i < fullStars; i++) starsHtml += '<i class="bi bi-star-fill"></i>';
+            if (hasHalf) starsHtml += '<i class="bi bi-star-half"></i>';
+            for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="bi bi-star"></i>';
+            
+            return starsHtml;
         }
         
-        // Load applications with NO CACHE
+        // Load applications with new format: Name, URL, Icon, Tag, Description, Rating
         async function loadApplications(showToastMsg = false) {
-            // Show loading state
             container.innerHTML = `
                 <div class="state-container">
                     <div class="spinner-circle"></div>
@@ -641,34 +729,35 @@
                 
                 const apps = [];
                 for (const line of lines) {
+                    // Format: App Name, Launch URL, Icon URL, Tag, Description, Star Rating
                     const parts = line.split(',').map(part => part.trim());
+                    
                     if (parts.length >= 1 && parts[0]) {
-                        const folderName = parts[0];
-                        const customPath = parts.length >= 2 && parts[1] ? parts[1] : null;
-                        const logoUrl = parts.length >= 3 && parts[2] ? parts[2] : null;
+                        const appName = parts[0];
+                        const launchUrl = parts.length >= 2 && parts[1] ? parts[1] : './';
+                        const iconUrl = parts.length >= 3 && parts[2] && parts[2] !== '' ? parts[2] : null;
+                        const tag = parts.length >= 4 && parts[3] ? parts[3] : 'App';
+                        const description = parts.length >= 5 && parts[4] ? parts[4] : 'No description available';
+                        const rating = parts.length >= 6 && parts[5] ? parseFloat(parts[5]) : 4.0;
                         
-                        let appPath;
-                        if (customPath) {
-                            appPath = customPath;
-                        } else {
-                            appPath = `./${folderName}/`;
-                        }
+                        // Validate rating between 0-5
+                        const validRating = Math.min(5, Math.max(0, isNaN(rating) ? 4.0 : rating));
                         
-                        const displayName = formatAppName(folderName);
                         apps.push({
-                            id: folderName.replace(/[^a-z0-9]/gi, '_').toLowerCase(),
-                            name: displayName,
-                            folder: folderName,
-                            path: appPath,
-                            logoUrl: logoUrl,
-                            category: getCategoryFromName(folderName),
-                            searchTokens: (displayName + ' ' + folderName + ' ' + getCategoryFromName(folderName)).toLowerCase()
+                            id: appName.replace(/[^a-z0-9]/gi, '_').toLowerCase(),
+                            name: appName,
+                            url: launchUrl,
+                            iconUrl: iconUrl,
+                            tag: tag,
+                            description: description,
+                            rating: validRating,
+                            searchTokens: (appName + ' ' + tag + ' ' + description).toLowerCase()
                         });
                     }
                 }
                 
                 if (apps.length === 0) {
-                    renderEmptyState('No applications found', 'Add entries to apps.txt file with format: FolderName,OptionalPath,LogoURL', null, false);
+                    renderEmptyState('No applications found', 'Add entries to apps.txt file with format: App Name, Launch URL, Icon URL, Tag, Description, Star Rating', null, false);
                     if (showToastMsg) showToast('No apps found in config', true);
                     return;
                 }
@@ -676,7 +765,6 @@
                 allApps = apps;
                 updateTotalBadge();
                 
-                // Preserve search if any
                 if (currentFilter) {
                     const filtered = filterApps(currentFilter);
                     renderAppsGrid(filtered);
@@ -727,30 +815,58 @@
             const gridHtml = `
                 <div class="apps-grid">
                     ${appsToRender.map(app => `
-                        <a href="${escapeHtml(app.path)}" target="_blank" class="app-card" rel="noopener noreferrer">
-                            <div class="card-icon-wrapper">
-                                ${app.logoUrl ? 
-                                    `<img src="${escapeHtml(app.logoUrl)}" alt="${escapeHtml(app.name)}" class="app-icon-large" 
-                                        onerror="this.style.display='none'; this.parentElement.querySelector('.default-icon-large').style.display='flex';">` : 
-                                    ''
-                                }
-                                <div class="default-icon-large" ${app.logoUrl ? 'style="display: none;"' : ''}>
-                                    ${escapeHtml(app.name.charAt(0).toUpperCase())}
+                        <div class="app-card" data-url="${escapeHtml(app.url)}">
+                            <div class="card-header">
+                                <div class="icon-wrapper">
+                                    ${app.iconUrl ? 
+                                        `<img src="${escapeHtml(app.iconUrl)}" alt="${escapeHtml(app.name)}" class="app-icon-large" 
+                                            onerror="this.style.display='none'; this.parentElement.querySelector('.default-icon-large').style.display='flex';">` : 
+                                        ''
+                                    }
+                                    <div class="default-icon-large" ${app.iconUrl ? 'style="display: none;"' : ''}>
+                                        ${escapeHtml(getInitials(app.name))}
+                                    </div>
+                                </div>
+                                <div class="app-info-header">
+                                    <div class="app-title">${escapeHtml(app.name)}</div>
+                                    <div class="app-tag">
+                                        <i class="bi bi-tag-fill"></i>
+                                        ${escapeHtml(app.tag)}
+                                    </div>
+                                    <div class="star-rating">
+                                        <div class="stars">
+                                            ${renderStars(app.rating)}
+                                        </div>
+                                        <span class="rating-value">${app.rating.toFixed(1)}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-info">
-                                <div class="app-title">${escapeHtml(app.name)}</div>
-                                <div class="app-category">
-                                    <i class="bi bi-tag"></i>
-                                    ${escapeHtml(app.category)}
+                            <div class="app-description">
+                                <div class="description-text">${escapeHtml(app.description)}</div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="launch-btn">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                    <span>Launch App</span>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     `).join('')}
                 </div>
             `;
             
             container.innerHTML = gridHtml;
+            
+            // Attach click handlers to cards
+            document.querySelectorAll('.app-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Prevent if clicking on any interactive element that might bubble
+                    const url = card.getAttribute('data-url');
+                    if (url && url !== '#') {
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                    }
+                });
+            });
             
             const showingCount = appsToRender.length;
             const totalCount = allApps.length;
@@ -823,10 +939,8 @@
             });
         }
         
-        // Manual refresh - forces fresh load with cache busting
         async function manualRefresh() {
             await loadApplications(true);
-            // Clear search after refresh to show all fresh apps
             if (searchInput.value !== '') {
                 searchInput.value = '';
                 currentFilter = '';
@@ -841,7 +955,6 @@
             return div.innerHTML;
         }
         
-        // Initialize - load fresh with no cache
         async function init() {
             await loadApplications(false);
             attachSearchEvents();
