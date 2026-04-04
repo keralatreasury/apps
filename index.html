@@ -86,7 +86,7 @@
         const API_KEY = 'AIzaSyBAuS3Brpsw5JOJnjNJii1UlFa7ClXf8d4';
         const RANGE = 'A2:F';  // Columns: Name, URL, Icon URL, Tag, Description, Rating
         
-        // Build Google Sheets API URL (v4)
+        // Build  API URL (v4)
         const DATA_API_URL = `${DATA_URL}/${DATA_ID}/values/${encodeURIComponent(TABLE_NAME)}!${RANGE}?key=${API_KEY}&majorDimension=ROWS`;
         
         let allApps = [];
@@ -145,7 +145,7 @@
             return starsHtml;
         }
         
-        // Fetch data from Google Sheets API (no caching, fresh each time)
+        // Fetch data from  API (no caching, fresh each time)
         async function fetchAppsFromSheets() {
             const url = DATA_API_URL;
             try {
@@ -189,7 +189,7 @@
                 }
                 return apps;
             } catch (error) {
-                console.error('Google Sheets fetch error:', error);
+                console.error('Data fetch error:', error);
                 throw error;
             }
         }
@@ -206,8 +206,8 @@
             try {
                 const apps = await fetchAppsFromSheets();
                 if (apps.length === 0) {
-                    renderEmptyState('No applications found', 'Please check your Google Sheet "Apps Details" tab has valid data (A2:F range with at least app names).', null, false);
-                    if (showToastMsg) showToast('No apps found in Google Sheet', true);
+                    renderEmptyState('No applications found', 'Please check your Data  "Apps Details" tab has valid data (A2:F range with at least app names).', null, false);
+                    if (showToastMsg) showToast('No apps found in Data', true);
                     allApps = [];
                     updateTotalBadge();
                     return;
@@ -221,16 +221,16 @@
                     renderAppsGrid(allApps);
                 }
                 if (showToastMsg) {
-                    showToast(`Synced ${apps.length} app${apps.length !== 1 ? 's' : ''} from Google Sheets`);
+                    showToast(`Synced ${apps.length} app${apps.length !== 1 ? 's' : ''} .`);
                 }
             } catch (error) {
                 console.error('Load error:', error);
-                let friendlyMsg = 'Failed to load data from Google Sheets. ';
+                let friendlyMsg = 'Failed to load App Data . ';
                 if (error.message.includes('403')) friendlyMsg += 'API key may be invalid or Sheets API not enabled.';
                 else if (error.message.includes('404')) friendlyMsg += 'Spreadsheet ID or sheet name incorrect.';
                 else friendlyMsg += 'Check API key, sheet permissions, and range A2:F.';
                 renderEmptyState('Unable to load catalog', friendlyMsg, error.message, false);
-                if (showToastMsg) showToast('Google Sheets fetch error', true);
+                if (showToastMsg) showToast('Data fetch error', true);
                 allApps = [];
                 updateTotalBadge();
             }
@@ -255,7 +255,7 @@
                 if (currentFilter && allApps.length > 0) {
                     renderEmptyState('No matching apps', `No apps found for "${escapeHtml(currentFilter)}"`, null, true);
                 } else if (allApps.length === 0) {
-                    renderEmptyState('App list is empty', 'Please check Google Sheet configuration', null, false);
+                    renderEmptyState('App list is empty', 'Please check  configuration', null, false);
                 } else {
                     renderEmptyState('No apps found', 'Try adjusting your search', null, true);
                 }
